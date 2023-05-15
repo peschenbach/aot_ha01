@@ -29,14 +29,12 @@ class EnvironmentAgent(private val envId: String): Agent(overrideName=envId) {
             this@EnvironmentAgent.gridSize = res.size
             nestPosition = res.nestPosition
             obstacleList = res.obstacles
-            print("gridsize PRE: " + gridSize)
 
+            /** send ants there starting position */
             for (a in antIDs) {
                 val ref = system.resolve(a)
-                print("ref PRE: " + ref)
                 ref tell PosToAnt(res.nestPosition)
             }
-
         }
     }
 
@@ -60,16 +58,11 @@ class EnvironmentAgent(private val envId: String): Agent(overrideName=envId) {
         listen<GameTurnInform>(BROADCAST_TOPIC) {it ->
             print("TURN: " + it.gameTurn)
 
+            /** tell ants that next turn has started */
             for (a in antIDs) {
                 val ref = system.resolve(a)
-                print("ref: " + ref)
-                ref tell "antTest"
+                ref tell TurnToAnt(it.gameTurn)
             }
         }
-
-
-        print("gridsize behave: " + gridSize)
-        print("nest behave: " + nestPosition)
-
     }
 }

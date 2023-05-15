@@ -21,9 +21,15 @@ class AntAgent(antId: String): Agent(overrideName=antId) {
         *   - adjust your parameters to get better results
         */
 
+        /** listen for init position from env */
         on<PosToAnt> {it ->
-            antPosition = it.position
+            this@AntAgent.antPosition = it.position
             print("ANT POSITION: " + antPosition)
+        }
+
+        /** listen for next turn from env */
+        on<TurnToAnt> {
+            print( "POS!: " + this@AntAgent.antPosition)
         }
 
     }
